@@ -1,15 +1,33 @@
-import React, {Component} from "react";
-import HelloWorld from "./HelloWorld";
-import reducer from "./reducers";
-import {createStore} from "redux";
-
-const initialState = {tech: "React "};
-const store = createStore(reducer, initialState);
+import React, {Component} from 'react';
+import './App.css';
+import Counter from "./Counter";
+import store from "./store";
+import {connect} from 'react-redux'
 
 class App extends Component {
+  constructor() {
+    super()
+  }
+
+  onIncrement = () => {
+    console.log("INCREMENT")
+    store.dispatch({type: 'INCREMENT', value: 2})
+    console.log(store.getState())
+  }
+  onDecrement = () => {
+    console.log("DECREMENT")
+    store.dispatch({type: 'DECREMENT', value: 3})
+    console.log(store.getState())
+  }
+
   render() {
-    return <HelloWorld tech={store.getState().tech}/>
+    return <Counter value={store.getState()}
+                    onIncrement={this.onIncrement}
+                    onDecrement={this.onDecrement}/>
+
   }
 }
 
-export default App;
+store.subscribe(() => console.log(">>>", Math.cos(Math.random())))
+
+export default connect(state => state)(App)
