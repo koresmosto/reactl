@@ -1,10 +1,10 @@
-export default (state = 1, action) => {
-  switch (action.type) {
-    case 'INCREMENT':
-      return state + action.value
-    case 'DECREMENT':
-      return state - action.value
-    default:
-      return state
-  }
-}
+import {combineReducers} from 'redux'
+import contactsReducer from './contactsReducer';
+import uiReducer from './uiReducer';
+
+const rootReducer = combineReducers({
+  contacts: contactsReducer,
+  ui: uiReducer,
+})
+
+export default rootReducer;

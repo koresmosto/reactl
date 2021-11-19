@@ -1,39 +1,24 @@
-import { createStore } from "redux";
-// This is the reducer
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "INCREMENT":
-      return state + action.payload
-    case "DECREMENT":
-      return state - action.payload
-    default:
-      return state
-  }
-}
+import React from 'react';
+import {render} from 'react-dom';
+import App from './App';
+/* Import Redux store and the actions */
+import configureStore from './store/configureStore';
+import {toggleContactForm, handleInputChange} from './actions';
 
-//initialState is optional.
-//For this demo, I am using a counter, but usually state is an object
-const initialState = 0
-const store = createStore(reducer, initialState);
+const store = configureStore();
 
-store.subscribe( () => {
-  console.log("State has changed: "  + store.getState());
-})
+//Note that subscribe() returns a function for unregistering the listener
 
-const incrementCount = (count) => {
-  return {
-    type: "INCREMENT",
-    payload: count
-  }
-}
+const unsubscribe = store.subscribe(() =>
+  console.log(store.getState())
+)
 
-const decrementCount = (count) => {
-  return {
-    type: "DECREMENT",
-    payload: count
-  }
-}
+/* returns isContactFormHidden returns false */
+store.dispatch(toggleContactForm());
+/* returns isContactFormHidden returns false */
+store.dispatch(toggleContactForm());
 
-store.dispatch({type: "INCREMENT", payload: 1});
-store.dispatch(incrementCount(5));
-store.dispatch(decrementCount(3));
+/* updates the state of contacts.newContact object */
+store.dispatch(handleInputChange('email', 'manjunath@example.com'))
+
+unsubscribe();
